@@ -58,7 +58,6 @@ io.on('connection', (socket) => {
   // Broadcast audio within a room
   socket.on('audio-chunk', ({ roomId, data }) => {
     if (rooms[roomId]) {
-      console.log(`Audio For Room ${roomId}`);
       socket.to(roomId).emit('audio-chunk', data);
     }
   });
