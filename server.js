@@ -12,9 +12,11 @@ io.on('connection', (socket) => {
   console.log('A new client connected');
 
   socket.on('audio-chunk', (data) => {
+    console.log('Received audio-chunk event');
+    console.log('Data:', data);
+
     // Broadcast the audio chunk to all connected clients
     io.emit('audio-chunk', data);
-    console.log('Received >>>> '+data);
   });
 
   socket.on('disconnect', () => {
