@@ -15,12 +15,16 @@ io.on('connection', (socket) => {
 
   // Create a room
   socket.on('create-room', (roomId) => {
-    if (!rooms[roomId]) {
-      rooms[roomId] = { host: socket.id, clients: [] };
-      socket.join(roomId);
-      io.emit('room-list', Object.keys(rooms)); // Notify all clients about the new room
-      console.log(`Room ${roomId} created`);
+    if (rooms[roomId]) {
+      // If the room already exists, delete it first
+      delete rooms[roomId];
+      io.in(roomId).socketsLeave(roomId); // Disconnect all clients from the room
+      console.log(`Room ${roomId} deleted to create a new one`);
     }
+    rooms[roomId] = { host: socket.id, clients: [] };
+    socket.join(roomId);
+    io.emit('room-list', Object.keys(rooms)); // Notify all clients about the new room
+    console.log(`Room ${roomId} created`);
   });
 
   // Delete a room
