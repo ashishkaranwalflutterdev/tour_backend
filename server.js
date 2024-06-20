@@ -43,6 +43,7 @@ io.on('connection', (socket) => {
       socket.join(roomId);
       rooms[roomId].clients.push(socket.id);
       console.log(`Client joined room ${roomId}`);
+      io.in(roomId).emit('user-joined', roomId);
     }
   });
 
